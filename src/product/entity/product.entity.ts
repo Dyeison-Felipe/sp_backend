@@ -1,11 +1,8 @@
 import { Cart_Items } from 'src/cart_items/entity/cart-items.entity';
-import { User } from 'src/user/entity/user.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
-  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -33,10 +30,6 @@ export class Product {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
-
-  @ManyToOne(() => User, (user) => user.products)
-  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
-  user?: User;
 
   @OneToMany(() => Cart_Items, (cart_items) => cart_items)
   cart_items?: Cart_Items;

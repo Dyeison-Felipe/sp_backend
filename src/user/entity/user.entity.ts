@@ -1,6 +1,5 @@
 import { Cart } from 'src/cart/entity/cart.entity';
 import { Order } from 'src/orders/entity/order.entity';
-import { Product } from 'src/product/entity/product.entity';
 import {
   Column,
   CreateDateColumn,
@@ -36,9 +35,6 @@ export class User {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
-
-  @OneToMany(() => Product, (products) => products.user)
-  products?: Product[];
 
   @OneToMany(() => Order, (orders) => orders.user)
   orders?: Order[];
