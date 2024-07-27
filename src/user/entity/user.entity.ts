@@ -37,7 +37,7 @@ export class User {
   updatedAt: Date;
 
   @OneToMany(() => Order, (orders) => orders.user)
-  orders?: Order[];
+  orders: Order[];
 
   @OneToOne(() => Cart, (cart) => cart.user)
   cart: Cart;

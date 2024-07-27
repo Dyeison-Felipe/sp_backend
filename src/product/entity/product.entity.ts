@@ -32,5 +32,5 @@ export class Product {
   updatedAt: Date;
 
   @OneToMany(() => Cart_Items, (cart_items) => cart_items)
-  cart_items?: Cart_Items;
+  cart_items: Cart_Items;
 }
