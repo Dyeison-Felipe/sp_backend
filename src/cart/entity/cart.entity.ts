@@ -10,17 +10,19 @@ import {
 } from 'typeorm';
 
 @Entity({ name: 'Cart' })
-export class Cart {
+export class CartEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => UserEntity, (user) => user.cart)
+  @OneToOne(() => UserEntity, (user) => user.cart, { cascade: true })
+  @JoinColumn({ name: 'User', referencedColumnName: 'id' })
   user: UserEntity;
 
   @OneToOne(() => Order, (order) => order.cart)
   order: Order;
 
-  @OneToMany(() => Cart_Items, (cart_items) => cart_items.cart)
-  @JoinColumn({ name: 'cart_items_id', referencedColumnName: 'id' })
+  @OneToMany(() => Cart_Items, (cart_items) => cart_items.cart, {
+    cascade: true,
+  })
   cart_items: Cart_Items[];
 }

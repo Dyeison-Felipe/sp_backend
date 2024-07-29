@@ -5,6 +5,7 @@ import { CreateUserDto } from './dtos/createUser.dto';
 import { hash } from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateUserDto } from './dtos/updateUser.dto';
+import { CartService } from 'src/cart/cart.service';
 
 @Injectable()
 export class UserService {
@@ -13,6 +14,7 @@ export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    private readonly cartService: CartService,
   ) {}
 
   // 2 - começamos criando os metodos
@@ -26,6 +28,7 @@ export class UserService {
       where: {
         id: userId,
       },
+      relations: ['cart'],
     });
 
     if (!user) {
@@ -41,10 +44,17 @@ export class UserService {
     const saltOrRounds = 10;
     const passwordHash = await hash(createUserDto.password, saltOrRounds);
 
-    return this.userRepository.save({
+    const newUser = this.userRepository.create({
       ...createUserDto,
       password: passwordHash,
     });
+
+    const savedUser = await this.userRepository.save(newUser);
+
+    // aqui cria o carrinho do usuario ao criar o mesmo
+    await this.cartService.createCartForUser(savedUser);
+
+    return savedUser;
   }
 
   // 2.4 - o quarto metodo é o de poder editar os dados do usuário

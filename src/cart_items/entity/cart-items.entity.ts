@@ -1,4 +1,4 @@
-import { Cart } from 'src/cart/entity/cart.entity';
+import { CartEntity } from 'src/cart/entity/cart.entity';
 import { ProductEntity } from 'src/product/entity/product.entity';
 import {
   Column,
@@ -20,6 +20,6 @@ export class Cart_Items {
   @JoinColumn({ name: 'product_id', referencedColumnName: 'id' })
   products: ProductEntity[];
 
-  @ManyToOne(() => Cart, (cart) => cart.cart_items)
-  cart: Cart;
+  @ManyToOne(() => CartEntity, (cart) => cart.cart_items)
+  cart: CartEntity;
 }

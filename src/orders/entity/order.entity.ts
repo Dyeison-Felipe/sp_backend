@@ -1,4 +1,4 @@
-import { Cart } from 'src/cart/entity/cart.entity';
+import { CartEntity } from 'src/cart/entity/cart.entity';
 import { UserEntity } from 'src/user/entity/user.entity';
 import {
   Column,
@@ -29,6 +29,6 @@ export class Order {
   @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   user?: UserEntity;
 
-  @OneToOne(() => Cart, (cart) => cart.order)
-  cart: Cart;
+  @OneToOne(() => CartEntity, (cart) => cart.order)
+  cart: CartEntity;
 }
