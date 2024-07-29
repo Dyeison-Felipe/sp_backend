@@ -8,8 +8,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity()
-export class Product {
+@Entity({ name: 'Product' })
+export class ProductEntity {
   @PrimaryGeneratedColumn()
   id: number;
 

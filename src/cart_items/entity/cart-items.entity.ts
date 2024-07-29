@@ -1,5 +1,5 @@
 import { Cart } from 'src/cart/entity/cart.entity';
-import { Product } from 'src/product/entity/product.entity';
+import { ProductEntity } from 'src/product/entity/product.entity';
 import {
   Column,
   Entity,
@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity({ name: 'Cart_items' })
 export class Cart_Items {
   @PrimaryGeneratedColumn()
   id: number;
@@ -16,9 +16,9 @@ export class Cart_Items {
   @Column({ name: 'quantity', nullable: false })
   quantity: number;
 
-  @ManyToOne(() => Product, (product) => product.cart_items)
+  @ManyToOne(() => ProductEntity, (product) => product.cart_items)
   @JoinColumn({ name: 'product_id', referencedColumnName: 'id' })
-  products: Product[];
+  products: ProductEntity[];
 
   @ManyToOne(() => Cart, (cart) => cart.cart_items)
   cart: Cart;

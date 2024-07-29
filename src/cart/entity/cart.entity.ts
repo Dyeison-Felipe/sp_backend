@@ -1,6 +1,6 @@
 import { Cart_Items } from 'src/cart_items/entity/cart-items.entity';
 import { Order } from 'src/orders/entity/order.entity';
-import { User } from 'src/user/entity/user.entity';
+import { UserEntity } from 'src/user/entity/user.entity';
 import {
   Entity,
   JoinColumn,
@@ -9,13 +9,13 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity({ name: 'Cart' })
 export class Cart {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => User, (user) => user.cart)
-  user: User;
+  @OneToOne(() => UserEntity, (user) => user.cart)
+  user: UserEntity;
 
   @OneToOne(() => Order, (order) => order.cart)
   order: Order;

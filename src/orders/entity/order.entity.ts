@@ -1,5 +1,5 @@
 import { Cart } from 'src/cart/entity/cart.entity';
-import { User } from 'src/user/entity/user.entity';
+import { UserEntity } from 'src/user/entity/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -11,7 +11,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity({ name: 'Order' })
 export class Order {
   @PrimaryGeneratedColumn()
   id: number;
@@ -25,9 +25,9 @@ export class Order {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  @ManyToOne(() => User, (user) => user.orders)
+  @ManyToOne(() => UserEntity, (user) => user.orders)
   @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
-  user?: User;
+  user?: UserEntity;
 
   @OneToOne(() => Cart, (cart) => cart.order)
   cart: Cart;
