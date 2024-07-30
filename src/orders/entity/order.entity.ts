@@ -1,4 +1,3 @@
-import { CartEntity } from 'src/cart/entity/cart.entity';
 import { UserEntity } from 'src/user/entity/user.entity';
 import {
   Column,
@@ -6,7 +5,6 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -28,7 +26,4 @@ export class Order {
   @ManyToOne(() => UserEntity, (user) => user.orders)
   @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   user?: UserEntity;
-
-  @OneToOne(() => CartEntity, (cart) => cart.order)
-  cart: CartEntity;
 }

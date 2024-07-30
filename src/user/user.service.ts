@@ -5,7 +5,6 @@ import { CreateUserDto } from './dtos/createUser.dto';
 import { hash } from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateUserDto } from './dtos/updateUser.dto';
-import { CartService } from 'src/cart/cart.service';
 
 @Injectable()
 export class UserService {
@@ -14,7 +13,6 @@ export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-    private readonly cartService: CartService,
   ) {}
 
   // 2 - começamos criando os metodos
@@ -28,7 +26,6 @@ export class UserService {
       where: {
         id: userId,
       },
-      relations: ['cart'],
     });
 
     if (!user) {
@@ -52,8 +49,6 @@ export class UserService {
     const savedUser = await this.userRepository.save(newUser);
 
     // aqui cria o carrinho do usuario ao criar o mesmo
-    await this.cartService.createCartForUser(savedUser);
-
     return savedUser;
   }
 
