@@ -17,14 +17,14 @@ export class UserEntity {
   @Column({ name: 'phone', nullable: false })
   number_phone: string;
 
-  @Column({ name: 'email', nullable: false })
+  @Column({ name: 'email', nullable: false, unique: true })
   email: string;
 
   @Column({ name: 'password', nullable: false })
   password: string;
 
   @Column({ name: 'role', nullable: false })
-  role: string;
+  role: number;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

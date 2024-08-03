@@ -8,12 +8,16 @@ import {
   Param,
   Post,
   Put,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ProductEntity } from './entity/product.entity';
 import { CreateProductDto } from './dtos/createProduct.dto';
 import { ReturnProductDto } from './dtos/returnProduct.dto';
 import { UpdateProductDto } from './dtos/updateProduct.dto';
+import { Roles } from 'src/decorators/roles.decorator';
+import { UserType } from 'src/user/enum/user-type.enum';
 
 @Controller('product')
 export class ProductController {
@@ -32,8 +36,9 @@ export class ProductController {
 
     return new ReturnProductDto(product);
   }
-
+  @Roles(UserType.Admin)
   @Post()
+  @UsePipes(ValidationPipe)
   async createProduct(
     @Body() createProductDto: CreateProductDto,
   ): Promise<ReturnProductDto> {

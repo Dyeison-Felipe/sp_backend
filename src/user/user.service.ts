@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadGatewayException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { UserEntity } from './entity/user.entity';
 import { CreateUserDto } from './dtos/createUser.dto';
@@ -21,7 +25,7 @@ export class UserService {
     return this.userRepository.find();
   }
   // 2.2 - O segundo metodo é o de buscar usuário por id
-  async getAllUserId(userId: number): Promise<UserEntity> {
+  async getAllUserById(userId: number): Promise<UserEntity> {
     const user = await this.userRepository.findOne({
       where: {
         id: userId,
@@ -35,14 +39,38 @@ export class UserService {
     return user;
   }
 
+  async getAllUserByEmail(email: string): Promise<UserEntity> {
+    const user = this.userRepository.findOne({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException(`Email id ${email} NotFound`);
+    }
+
+    return user;
+  }
+
   // 2.3 - o terceiro metodo é o de criar um novo usuario.
   async createUser(createUserDto: CreateUserDto): Promise<UserEntity> {
     // aqui começo salvando a senha com um hash, mas ainda não esta validando login
+
+    const user = await this.getAllUserByEmail(createUserDto.email).catch(
+      () => undefined,
+    );
+
+    if (user) {
+      throw new BadGatewayException('email registered in system');
+    }
+
     const saltOrRounds = 10;
     const passwordHash = await hash(createUserDto.password, saltOrRounds);
 
     const newUser = this.userRepository.create({
       ...createUserDto,
+      role: 2,
       password: passwordHash,
     });
 

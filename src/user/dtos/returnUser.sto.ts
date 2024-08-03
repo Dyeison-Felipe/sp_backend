@@ -6,7 +6,7 @@ export class ReturnUserDto {
   email: string;
   number_phone: string;
   password: string;
-  role: string;
+  role: number;
   constructor(userEntity: UserEntity) {
     this.id = userEntity.id;
     this.name = userEntity.name;

@@ -35,7 +35,7 @@ export class UserController {
 
   @Get('/:userId')
   async getAllUserId(@Param('userId') userId: number): Promise<ReturnUserDto> {
-    const user = await this.userService.getAllUserId(userId);
+    const user = await this.userService.getAllUserById(userId);
     return new ReturnUserDto(user);
   }
 
