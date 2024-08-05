@@ -36,6 +36,7 @@ export class ProductController {
 
     return new ReturnProductDto(product);
   }
+
   @Roles(UserType.Admin)
   @Post()
   @UsePipes(ValidationPipe)
@@ -47,6 +48,7 @@ export class ProductController {
     return new ReturnProductDto(product);
   }
 
+  @Roles(UserType.Admin)
   @Put('/:productId')
   async updateProduct(
     @Param('productId') productId: number,
@@ -60,6 +62,7 @@ export class ProductController {
     return new ReturnProductDto(product);
   }
 
+  @Roles(UserType.Admin)
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':productId')
   async deleteProduct(@Param('productId') productId: number) {
