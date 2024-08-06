@@ -6,9 +6,10 @@ import {
 import { Repository } from 'typeorm';
 import { UserEntity } from './entity/user.entity';
 import { CreateUserDto } from './dtos/createUser.dto';
-import { hash } from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateUserDto } from './dtos/updateUser.dto';
+import { UpdatePasswordDto } from './dtos/updatePassword.dto';
 
 @Injectable()
 export class UserService {
@@ -96,6 +97,37 @@ export class UserService {
     Object.assign(user, updateUserDto);
 
     return this.userRepository.save(user);
+  }
+
+  async updatePasswordUser(
+    updatePasswordDto: UpdatePasswordDto,
+    userId: number,
+  ): Promise<UserEntity> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new NotFoundException(`User with id ${userId} not found`);
+    }
+
+    const isPasswordValid = await compare(
+      updatePasswordDto.lastPassword,
+      user.password,
+    );
+
+    if (!isPasswordValid) {
+      throw new NotFoundException('Invalid current password');
+    }
+
+    const saltOrRounds = 10;
+    const passwordHash = await hash(
+      updatePasswordDto.newPassword,
+      saltOrRounds,
+    );
+
+    user.password = passwordHash;
+    return await this.userRepository.save(user); // Verifique se este código está dentro do método assíncrono
   }
 
   // 2.5 - o quinto metodo é o de excluir uusario
